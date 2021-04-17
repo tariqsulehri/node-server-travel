@@ -1,12 +1,22 @@
 const mysql = require("mysql");
 const util = require('util');
 
+//Local db
+// let db_con = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: '1234',
+//     database: 'travel-db'
+// });
+
+// Live Test DB
 let db_con = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '1234',
-    database: 'travel-db'
+    host: 'sql5.freesqldatabase.com',
+    user: 'sql5406277',
+    password: 't9Iqc3kfY9',
+    database: 'sql5406277'
 });
+
 
 // Connect to MySQL server
 db_con.connect((err) => {
