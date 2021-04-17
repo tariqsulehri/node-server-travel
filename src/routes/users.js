@@ -16,49 +16,7 @@ var LOGIN_FAIL = { code: 0, success: false, message: "Invalid Username or Passwo
 
 var INVALID_INPUT = { code: 0, success: false, message: "Invalid input's", result: null };
 
-router.post('/api/login', async (req, res) => {
 
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        LOGIN_FAIL.result = req.body;
-        return res.send(LOGIN_FAIL);
-    }
-
-    try {
-
-        const data = { ...req.body };
-        var params = [data.password, data.email]
-
-        var userQuery = `SELECT users.id, password1, users.email FROM users  WHERE email = '${email}';`;
-        var result = await database.query(userQuery);
-
-        var isValidPassword = bcrypt.compareSync(password, result[0].password);
-
-        if (!isValidPassword) {
-            return res.send(LOGIN_FAIL);
-        }
-
-        let query = `SELECT users.id, users.username, users.email, roles.name as rolename FROM users INNER JOIN roles ON users.role_id = roles.id  WHERE email = '${email}' AND password='${password}';`;
-
-        var result = await database.query(query, params);
-
-        if (!result[0]) {
-            return res.send(LOGIN_FAIL);
-        }
-
-        var token = jwt.sign({ id: result[0].id }, "nodeSecretKey");
-        LOGIN.token = token;
-        LOGIN.result = result[0];
-
-        return res.send(LOGIN);
-
-    }
-    catch (error) {
-        return res.send(SOME_THONG_WENTWRONG);
-    }
-
-});
 
 
 router.post('/api/users', async (req, res) => {
@@ -73,7 +31,8 @@ router.post('/api/users', async (req, res) => {
     try {
         const data = { ...req.body };
 
-        var passwordHash = bcrypt.hashSync(data.password, 8);
+        var salt = await bcrypt.genSalt(8);
+        var passwordHash = await bcrypt.hash(data.password, salt);
 
         var params = [data.username, passwordHash, data.password, data.email, data.role_id]
 
@@ -105,7 +64,8 @@ router.put('/api/users', async (req, res) => {
 
     try {
         const data = { ...req.body };
-        let query = `UPDATE users SET password = '${data.password}' , role_id = ${data.role_id}  WHERE email = '${data.email}' ;`;
+        var passwordHash = bcrypt.hashSync(data.password, 8);
+        let query = `UPDATE users SET password = '${passwordHash}' , role_id = ${data.role_id}  WHERE email = '${data.email}' ;`;
         var result = await database.query(query);
         res.send(SUCCESS);
     }
