@@ -16,9 +16,6 @@ var LOGIN_FAIL = { code: 0, success: false, message: "Invalid Username or Passwo
 
 var INVALID_INPUT = { code: 0, success: false, message: "Invalid input's", result: null };
 
-
-
-
 router.post('/api/users', async (req, res) => {
 
     const { username, email, password, role_id } = req.body;
@@ -74,6 +71,27 @@ router.put('/api/users', async (req, res) => {
     }
 
 });
+
+router.get("/api/users", async (req, res) => {
+    try {
+
+        let query = `SELECT users.id, users.username, users.email, roles.name as rolename FROM users INNER JOIN roles ON users.role_id = roles.id; `;
+        var result = await database.query(query);
+
+        if (!result[0]) {
+            SUCCESS.result = null;
+            return res.status(200).send(SUCCESS);
+        }
+
+        SUCCESS.result = result;
+        return res.status(200).send(SUCCESS);
+
+    } catch (error) {
+        console.log(error);
+        return res.status(401).send(FAIL);
+    }
+});
+
 
 const CheckDuplicate = async (email) => {
 

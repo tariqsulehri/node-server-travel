@@ -6,6 +6,7 @@ const users = require('../routes/users');
 const manager = require('../routes/manager');
 const staff = require('../routes/staff');
 const client = require('../routes/client');
+const setups = require('../routes/setup');
 
 const whitelist = [
     'http://localhost:3200',
@@ -35,5 +36,6 @@ module.exports = function (app) {
     app.use('/', manager);
     app.use('/', staff);
     app.use('/', client);
+    app.use('/', setups);
 }
 

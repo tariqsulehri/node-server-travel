@@ -5,7 +5,6 @@ const app = express();
 require('./src/startup/routes')(app);
 require('./src/startup/config')(app);
 //require('./src/startup/db')();
-
 const port = process.env.PORT || 3200;
 
 http.createServer(app).listen(port, function () {
