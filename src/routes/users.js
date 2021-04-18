@@ -41,6 +41,7 @@ router.post('/api/users', async (req, res) => {
 
         let query = `INSERT INTO users ( username, password, password1, email, role_id ) VALUES ( ?, ? ,?, ?, ?); `;
         var result = await database.query(query, params);
+        SUCCESS.result = { username: data.username, password: passwordHash, email: data.email, role_id: data.role_id }
         res.send(SUCCESS);
 
     }
