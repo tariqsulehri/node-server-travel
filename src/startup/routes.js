@@ -1,8 +1,11 @@
 const express = require('express');
 const cors = require('cors');
+const auth = require('../routes/auth');
 const home = require('../routes/home');
 const users = require('../routes/users');
-const auth = require('../routes/auth');
+const manager = require('../routes/manager');
+const staff = require('../routes/staff');
+const client = require('../routes/client');
 
 const whitelist = [
     'http://localhost:3200',
@@ -26,9 +29,11 @@ const corsOptions = {
 module.exports = function (app) {
     app.use(cors(corsOptions));
     app.use(express.json());
-    //app.use(express.urlencoded({ extended: true })); //to avoid body-parser depricated
+    app.use('/', auth);
     app.use('/', home);
     app.use('/', users);
-    app.use('/', auth);
+    app.use('/', manager);
+    app.use('/', staff);
+    app.use('/', client);
 }
 

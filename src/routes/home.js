@@ -1,12 +1,9 @@
 const express = require("express");
+const auth = require('../middleware/auth');
 const router = express.Router(); // instead this will work.
 
-router.post('/', async (req, res) => {
-    res.send("Home Post");
-});
-
-router.get('/', async (req, res) => {
-    res.send("Travel Api Server....");
+router.get('/', auth, async (req, res) => {
+    res.send("Home....");
 });
 
 module.exports = router;
