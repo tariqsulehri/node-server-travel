@@ -73,6 +73,27 @@ router.put('/api/users', async (req, res) => {
 
 });
 
+router.get("/api/users/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        let query = `SELECT users.id, users.username, users.email, roles.name as rolename FROM users INNER JOIN roles ON users.role_id = roles.id WHERE users.id=${id}; `;
+        var result = await database.query(query);
+
+        if (!result[0]) {
+            SUCCESS.result = null;
+            return res.status(200).send(SUCCESS);
+        }
+
+        SUCCESS.result = result;
+        return res.status(200).send(SUCCESS);
+
+    } catch (error) {
+        console.log(error);
+        return res.status(401).send(FAIL);
+    }
+});
+
+
 router.get("/api/users", async (req, res) => {
     try {
 
