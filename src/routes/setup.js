@@ -35,4 +35,24 @@ router.get("/api/setups/roles", async (req, res) => {
     }
 });
 
+router.get("/api/setups/work_levels", async (req, res) => {
+    try {
+
+        let query = `SELECT * FROM work_levels;`;
+        var result = await database.query(query);
+
+        if (!result[0]) {
+            SUCCESS.result = null;
+            return res.status(200).send(SUCCESS);
+        }
+
+        SUCCESS.result = result;
+        return res.status(200).send(SUCCESS);
+
+    } catch (error) {
+        console.log(error);
+        return res.status(401).send(FAIL);
+    }
+});
+
 module.exports = router;
