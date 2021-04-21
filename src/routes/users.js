@@ -56,7 +56,7 @@ router.post('/api/users', async (req, res) => {
             data.what_like,
             data.pg_doctor,
             data.pg_doctor_contact_no,
-            data.pd_doctor_address
+            data.pg_doctor_address
         ];
 
         var duplicate = await CheckDuplicate(email);
@@ -91,7 +91,7 @@ router.post('/api/users', async (req, res) => {
                                          what_like,
                                          pg_doctor,
                                          pg_doctor_contact_no,
-                                         pd_doctor_address
+                                         pg_doctor_address
                                         ) 
                                 VALUES ( ?, ?, ?, ?, ?, ?,
                                          ?, ?, ?, ?, ?, ?, 
@@ -113,7 +113,7 @@ router.post('/api/users', async (req, res) => {
 
 });
 
-router.put('/api/users', async (req, res) => {
+router.put('/api/users/change_pass', async (req, res) => {
 
     const { username, email, password, role_id } = req.body;
 
@@ -127,6 +127,80 @@ router.put('/api/users', async (req, res) => {
         var passwordHash = bcrypt.hashSync(data.password, 8);
         let query = `UPDATE users SET password = '${passwordHash}' , role_id = ${data.role_id}  WHERE email = '${data.email}' ;`;
         var result = await database.query(query);
+        res.send(SUCCESS);
+    }
+    catch (error) {
+        res.send(SOME_THONG_WENTWRONG);
+    }
+
+});
+
+router.put('/api/users', async (req, res) => {
+
+    const { username, email, password, role_id } = req.body;
+
+    if (!username || !email || !password || !role_id) {
+        INVALID_INPUT.result = req.body;
+        return res.send(INVALID_INPUT);
+    }
+
+    try {
+        const data = { ...req.body };
+
+        var salt = await bcrypt.genSalt(8);
+        var passwordHash = await bcrypt.hash(data.password, salt);
+        var is_active = data.is_active;
+        var dob = data.dob;
+        var account_no = data.account_no;
+        var bsb = data.bsb;
+        var account_title = data.account_title;
+        var mobile_no = data.mobile_no;
+        var nationality = data.nationality;
+        var address = data.address;
+        var emergency_contact = data.emergency_contact;
+        var ndis_no = data.ndis_no;
+        var wwc_no = data.wwc_no;
+        var car_reg_no = data.car_reg_no;
+        var drv_lic_no = data.drv_lic_no;
+        var level_of_work = data.level_of_work;
+        var disability_type = data.disability_type;
+        var parent_gaurdian_details = data.parent_gaurdian_details;
+        var last_address = data.last_address;
+        var what_like = data.what_like;
+        var pg_doctor = data.pg_doctor;
+        var pg_doctor_contact_no = data.pg_doctor_contact_no;
+        var pg_doctor_address = data.pg_doctor_address;
+
+        //dob = '${dob.dobtoISOString().slice(0, 19).replace('T', ' ')}',
+
+        let query = `UPDATE users SET    username = '${username}', 
+                                         role_id = ${role_id},
+                                         is_active = ${is_active},
+                                         account_no = '${account_no}',
+                                         bsb = '${bsb}',
+                                         account_title = '${account_title}',
+                                         mobile_no = '${mobile_no}',
+                                         nationality = '${nationality}',
+                                         address = '${address}',
+                                         emergency_contact = '${emergency_contact}',
+                                         ndis_no = '${ndis_no}',
+                                         wwc_no = '${wwc_no}',
+                                         car_reg_no = '${car_reg_no}',
+                                         drv_lic_no = '${drv_lic_no}',
+                                         level_of_work = '${level_of_work}',
+                                         disability_type = '${disability_type}',
+                                         parent_gaurdian_details = '${parent_gaurdian_details}',
+                                         last_address = '${last_address}',
+                                         what_like = '${what_like}' ,
+                                         pg_doctor = '${pg_doctor}',
+                                         pg_doctor_contact_no = '${pg_doctor_contact_no}',
+                                         pg_doctor_address = '${pg_doctor_address}'
+                                WHERE email = '${email}' ; `;
+
+        var result = await database.query(query);
+
+        SUCCESS.message = "User Sucessfuly updated..."
+        SUCCESS.result = data;
         res.send(SUCCESS);
     }
     catch (error) {
@@ -153,6 +227,7 @@ router.get("/api/users/:id", async (req, res) => {
         console.log(error);
         return res.status(401).send(FAIL);
     }
+
 });
 
 
