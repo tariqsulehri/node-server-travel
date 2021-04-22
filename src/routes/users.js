@@ -171,7 +171,8 @@ router.put('/api/users', async (req, res) => {
         var pg_doctor_contact_no = data.pg_doctor_contact_no;
         var pg_doctor_address = data.pg_doctor_address;
 
-        //dob = '${dob.dobtoISOString().slice(0, 19).replace('T', ' ')}',
+        var dob = dob.dobtoISOString().slice(0, 19).replace('T', ' ');
+        console.log(dob);
 
         let query = `UPDATE users SET    username = '${username}', 
                                          role_id = ${role_id},
