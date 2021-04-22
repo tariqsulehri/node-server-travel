@@ -17,15 +17,15 @@ router.post("/api/client/create_request", async (req, res) => {
     try {
         const data = { ...req.body };
 
-        console.log(date);
+        console.log(data);
 
         request_status = "SENT";
 
         var params = [
             datetime,
             client_user_id,
-            city,
-            country,
+            data.city,
+            data.country,
             loc_attu,
             loc_long,
             request_status
