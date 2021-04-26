@@ -2,12 +2,21 @@ const mysql = require("mysql");
 const util = require('util');
 
 //Local db
+// let db_con = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: '1234',
+//     database: 'travel-db'
+// });
+
 let db_con = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '1234',
-    database: 'travel-db'
+    host: '104.219.233.225',//'localhost',
+    user: 'bitbyte1_admin',
+    password: 'tariqsulehri',
+    database: 'bitbyte1_hms-db'
 });
+
+
 
 // Live Test DB
 // let db_con = mysql.createConnection({
