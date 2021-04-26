@@ -10,8 +10,6 @@ var SUCCESS = { code: 1, success: true, message: "Success", result: null };
 var FAIL = { code: 0, success: false, message: "Fail" };
 var SOME_THONG_WENTWRONG = { code: 0, success: false, message: "Something went wrong" };
 
-var LOGIN = { code: 1, success: true, message: "Success", result: null, token: null };
-var LOGIN_FAIL = { code: 0, success: false, message: "Invalid Username or Password", result: null, token: null };
 
 var INVALID_INPUT = { code: 0, success: false, message: "Invalid input's", result: null };
 
@@ -30,8 +28,7 @@ router.get("/api/setups/roles", async (req, res) => {
         return res.status(200).send(SUCCESS);
 
     } catch (error) {
-        console.log(error);
-        return res.status(401).send(FAIL);
+        return res.status(401).send(SOME_THONG_WENTWRONG);
     }
 });
 
@@ -50,8 +47,7 @@ router.get("/api/setups/work_levels", async (req, res) => {
         return res.status(200).send(SUCCESS);
 
     } catch (error) {
-        console.log(error);
-        return res.status(401).send(FAIL);
+        return res.status(401).send(SOME_THONG_WENTWRONG);
     }
 });
 
